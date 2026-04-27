@@ -1,10 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout/Layout';
+import { AuthProvider } from './contexts/AuthContext';
+import Navbar from './components/Layout/Navbar';
+import Footer from './components/Layout/Footer';
 import HomePage from './pages/HomePage';
 import ExercisePage from './pages/ExercisePage';
 import SolvedPage from './pages/SolvedPage';
 import ProfilePage from './pages/ProfilePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 const ThemeContext = createContext();
@@ -43,20 +47,51 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
+// Layout simple sans useAuth
+const Layout = ({ children }) => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <Navbar />
+      <main className="pt-20">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <Layout>
+      <AuthProvider>
+        <Router>
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/exercise/:id" element={<ExercisePage />} />
-            <Route path="/solved" element={<SolvedPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/" element={
+              <Layout>
+                <HomePage />
+              </Layout>
+            } />
+            <Route path="/exercise/:id" element={
+              <Layout>
+                <ExercisePage />
+              </Layout>
+            } />
+            <Route path="/solved" element={
+              <Layout>
+                <SolvedPage />
+              </Layout>
+            } />
+            <Route path="/profile" element={
+              <Layout>
+                <ProfilePage />
+              </Layout>
+            } />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </Layout>
-      </Router>
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
