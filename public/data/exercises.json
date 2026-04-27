@@ -1,0 +1,140 @@
+{
+  "exercises": [
+    {
+      "id": 1,
+      "title": "Pair ou Impair",
+      "difficulty": "easy",
+      "language": "javascript",
+      "tags": ["basics", "conditions", "math"],
+      "description": "Écrivez une fonction qui prend un nombre en paramètre et retourne 'Pair' si le nombre est pair, 'Impair' s'il est impair.",
+      "examples": [
+        { "input": "3", "output": "Impair" },
+        { "input": "4", "output": "Pair" },
+        { "input": "0", "output": "Pair" }
+      ],
+      "starterCode": "function checkEvenOdd(number) {\n    // Votre code ici\n    \n}",
+      "hints": [
+        "Utilisez l'opérateur modulo (%)",
+        "Un nombre est pair s'il est divisible par 2",
+        "Pensez à gérer les nombres négatifs"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "FizzBuzz",
+      "difficulty": "easy",
+      "language": "javascript",
+      "tags": ["basics", "loops", "conditions"],
+      "description": "Écrivez une fonction qui retourne un tableau contenant les nombres de 1 à n...",
+      "examples": [
+        { "input": "15", "output": "[1,2,Fizz,4,Buzz,Fizz,7,8,Fizz,Buzz,11,Fizz,13,14,FizzBuzz]" }
+      ],
+      "starterCode": "function fizzBuzz(n) {\n    let result = [];\n    // Votre code ici\n    \n    return result;\n}",
+      "hints": ["Utilisez une boucle for", "Vérifiez d'abord si le nombre est multiple de 3 ET 5"]
+    },
+    {
+      "id": 3,
+      "title": "Palindrome Checker",
+      "difficulty": "medium",
+      "language": "javascript",
+      "tags": ["strings", "algorithms"],
+      "description": "Écrivez une fonction qui vérifie si une chaîne de caractères est un palindrome...",
+      "examples": [
+        { "input": "racecar", "output": "true" },
+        { "input": "hello", "output": "false" }
+      ],
+      "starterCode": "function isPalindrome(str) {\n    // Votre code ici\n    \n}",
+      "hints": ["Convertissez la chaîne en minuscules", "Supprimez les caractères non alphabétiques"]
+    },
+    {
+      "id": 4,
+      "title": "Somme de deux nombres",
+      "difficulty": "easy",
+      "language": "python",
+      "tags": ["basics", "math"],
+      "description": "Écrivez une fonction qui prend deux nombres en paramètres et retourne leur somme.",
+      "examples": [
+        { "input": "2, 3", "output": "5" },
+        { "input": "10, 15", "output": "25" },
+        { "input": "-5, 7", "output": "2" }
+      ],
+      "starterCode": "def add_numbers(a, b):\n    # Votre code ici\n    pass",
+      "hints": [
+        "Utilisez l'opérateur +",
+        "Retournez le résultat de l'addition"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Nombre premier",
+      "difficulty": "medium",
+      "language": "python",
+      "tags": ["math", "algorithms"],
+      "description": "Écrivez une fonction qui vérifie si un nombre est premier. Un nombre premier est divisible uniquement par 1 et lui-même.",
+      "examples": [
+        { "input": "7", "output": "True" },
+        { "input": "10", "output": "False" },
+        { "input": "2", "output": "True" }
+      ],
+      "starterCode": "def is_prime(n):\n    # Votre code ici\n    pass",
+      "hints": [
+        "Un nombre premier est supérieur à 1",
+        "Vérifiez la divisibilité jusqu'à la racine carrée du nombre",
+        "2 est le seul nombre pair premier"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Inverser une chaîne",
+      "difficulty": "easy",
+      "language": "python",
+      "tags": ["strings", "basics"],
+      "description": "Écrivez une fonction qui prend une chaîne de caractères et retourne la chaîne inversée.",
+      "examples": [
+        { "input": "hello", "output": "olleh" },
+        { "input": "Python", "output": "nohtyP" },
+        { "input": "12345", "output": "54321" }
+      ],
+      "starterCode": "def reverse_string(s):\n    # Votre code ici\n    pass",
+      "hints": [
+        "Utilisez le slicing en Python : [::-1]",
+        "Vous pouvez aussi utiliser une boucle"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Fibonacci",
+      "difficulty": "medium",
+      "language": "python",
+      "tags": ["recursion", "math"],
+      "description": "Écrivez une fonction qui retourne le nième nombre de la suite de Fibonacci.",
+      "examples": [
+        { "input": "0", "output": "0" },
+        { "input": "1", "output": "1" },
+        { "input": "6", "output": "8" }
+      ],
+      "starterCode": "def fibonacci(n):\n    # Votre code ici\n    pass",
+      "hints": [
+        "Utilisez la récursion ou l'itération",
+        "Cas de base : n=0 donne 0, n=1 donne 1"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Compteur de voyelles",
+      "difficulty": "easy",
+      "language": "python",
+      "tags": ["strings", "basics"],
+      "description": "Écrivez une fonction qui compte le nombre de voyelles (a, e, i, o, u, y) dans une chaîne.",
+      "examples": [
+        { "input": "hello world", "output": "3" },
+        { "input": "Python programming", "output": "4" }
+      ],
+      "starterCode": "def count_vowels(s):\n    # Votre code ici\n    pass",
+      "hints": [
+        "Définissez une chaîne contenant les voyelles",
+        "Parcourez chaque caractère et vérifiez s'il est une voyelle"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getUserStats, getCompletedExercises, getExercises, resetAllData } from '../services/exerciseService';
+import Notification from '../components/UI/Notification';
+
+const ProfilePage = () => {
+  const navigate = useNavigate();
+  const [userProfile, setUserProfile] = useState({
+    username: 'CodeWarrior',
+    email: 'warrior@codearena.com',
+    joinDate: '2024-01-15',
+    avatar: '⚔️'
+  });
+  const [stats, setStats] = useState({ completed: 0, points: 0, streak: 0 });
+  const [level, setLevel] = useState('Débutant');
+  const [nextLevelPoints, setNextLevelPoints] = useState(200);
+  const [progress, setProgress] = useState({ completed: 0, total: 0 });
+  const [badges, setBadges] = useState([]);
+  const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    loadProfileData();
+  }, []);
+
+  const loadProfileData = () => {
+    const userStats = getUserStats();
+    const completed = getCompletedExercises();
+    
+    // Calculate level
+    let currentLevel = 'Débutant';
+    let nextPoints = 200;
+    if (userStats.points >= 1000) {
+      currentLevel = 'Expert';
+      nextPoints = 1000;
+    } else if (userStats.points >= 500) {
+      currentLevel = 'Avancé';
+      nextPoints = 500;
+    } else if (userStats.points >= 200) {
+      currentLevel = 'Intermédiaire';
+      nextPoints = 200;
+    }
+    
+    setLevel(currentLevel);
+    setNextLevelPoints(nextPoints);
+    setStats(userStats);
+    
+    // Get total exercises
+    getExercises().then(exercises => {
+      setProgress({ completed: userStats.completed, total: exercises.length });
+    });
+    
+    // Generate badges
+    const earnedBadges = [];
+    
+    if (userStats.completed >= 1) {
+      earnedBadges.push({ name: 'Premier pas', description: 'Premier exercice complété', icon: 'fa-footstep', color: 'from-gray-500 to-gray-600' });
+    }
+    if (userStats.completed >= 5) {
+      earnedBadges.push({ name: 'Apprenti', description: '5 exercices complétés', icon: 'fa-graduation-cap', color: 'from-amber-600 to-amber-700' });
+    }
+    if (userStats.completed >= 10) {
+      earnedBadges.push({ name: 'Dévoué', description: '10 exercices complétés', icon: 'fa-heart', color: 'from-silver to-gray-400' });
+    }
+    if (userStats.completed >= 20) {
+      earnedBadges.push({ name: 'Maître', description: '20 exercices complétés', icon: 'fa-crown', color: 'from-yellow-500 to-yellow-600' });
+    }
+    if (userStats.streak >= 7) {
+      earnedBadges.push({ name: 'Enflammé', description: '7 jours consécutifs', icon: 'fa-fire', color: 'from-orange-500 to-red-500' });
+    }
+    if (userStats.streak >= 30) {
+      earnedBadges.push({ name: 'Légende', description: '30 jours consécutifs', icon: 'fa-dragon', color: 'from-purple-600 to-pink-600' });
+    }
+    
+    setBadges(earnedBadges);
+  };
+
+  const handleResetProgress = () => {
+    if (window.confirm('Êtes-vous sûr de vouloir réinitialiser toute votre progression ? Cette action est irréversible.')) {
+      resetAllData();
+      loadProfileData();
+      setNotification({ message: 'Progression réinitialisée avec succès', type: 'warning' });
+      setTimeout(() => setNotification(null), 3000);
+    }
+  };
+
+  const levelProgress = (stats.points / nextLevelPoints) * 100;
+
+  const statItems = [
+    { label: 'Exercices résolus', value: stats.completed, icon: 'fa-check-circle', color: 'text-green-500' },
+    { label: 'Points totaux', value: stats.points, icon: 'fa-star', color: 'text-yellow-500' },
+    { label: 'Streak', value: `${stats.streak} jours`, icon: 'fa-fire', color: 'text-orange-500' },
+  ];
+
+  return (
+    <div className="container-custom space-y-8 animate-fade">
+      {/* Profile Header */}
+      <div className="card-glass p-8 text-center">
+        <div className="relative inline-block">
+          <div className="w-28 h-28 mx-auto bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-5xl shadow-xl">
+            {userProfile.avatar}
+          </div>
+          <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+        </div>
+        
+        <h2 className="text-2xl font-bold mt-4 gradient-text">{userProfile.username}</h2>
+        <p className="text-gray-500 dark:text-gray-400">{userProfile.email}</p>
+        <p className="text-sm text-gray-400 mt-2">
+          <i className="fas fa-calendar-alt mr-1"></i>
+          Membre depuis {userProfile.joinDate}
+        </p>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {statItems.map((item, idx) => (
+          <div key={idx} className="card-glass p-6 text-center">
+            <i className={`fas ${item.icon} ${item.color} text-3xl mb-3`}></i>
+            <h3 className="text-2xl font-bold gradient-text">{item.value}</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">{item.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Level Progress */}
+      <div className="card-glass p-6">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h3 className="text-lg font-semibold">Niveau {level}</h3>
+            <p className="text-sm text-gray-500 mt-1">{stats.points} / {nextLevelPoints} points</p>
+          </div>
+          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center">
+            <i className="fas fa-chart-line text-white"></i>
+          </div>
+        </div>
+        <div className="relative h-3 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+          <div 
+            className="absolute left-0 top-0 h-full bg-gradient-to-r from-purple-600 to-pink-600 rounded-full transition-all duration-500"
+            style={{ width: `${levelProgress}%` }}
+          ></div>
+        </div>
+      </div>
+
+      {/* Global Progress */}
+      <div className="card-glass p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold">Progression globale</h3>
+          <span className="text-sm text-gray-500">
+            {progress.completed} / {progress.total} exercices
+          </span>
+        </div>
+        <div className="relative h-3 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+          <div 
+            className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full transition-all duration-500"
+            style={{ width: `${(progress.completed / progress.total) * 100}%` }}
+          ></div>
+        </div>
+      </div>
+
+      {/* Badges */}
+      <div className="card-glass p-6">
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <i className="fas fa-medal text-yellow-500"></i>
+          Badges gagnés ({badges.length})
+        </h3>
+        
+        {badges.length === 0 ? (
+          <div className="text-center py-8">
+            <i className="fas fa-medal text-5xl text-gray-400 mb-3"></i>
+            <p className="text-gray-500">Aucun badge pour le moment</p>
+            <p className="text-sm text-gray-400 mt-2">Continuez à résoudre des exercices !</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {badges.map((badge, idx) => (
+              <div key={idx} className={`p-4 rounded-xl text-center bg-gradient-to-br ${badge.color} bg-opacity-10`}>
+                <i className={`fas ${badge.icon} text-3xl mb-2 text-white`}></i>
+                <h4 className="font-semibold text-sm text-white">{badge.name}</h4>
+                <p className="text-xs text-white/80 mt-1">{badge.description}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Reset Button */}
+      <div className="flex justify-center">
+        <button 
+          onClick={handleResetProgress}
+          className="px-6 py-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 transition-all duration-300"
+        >
+          <i className="fas fa-trash-alt mr-2"></i>
+          Réinitialiser ma progression
+        </button>
+      </div>
+
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
+    </div>
+  );
+};
+
+export default ProfilePage;
