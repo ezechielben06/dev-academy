@@ -276,26 +276,22 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          {/* Conditions d'utilisation */}
+          {/* Conditions d'utilisation - CORRIGÉ */}
           <div className="flex items-start gap-3 p-4 rounded-2xl bg-gradient-to-r from-purple-500/5 to-pink-500/5 border border-purple-500/20">
-            <div className="relative">
-              <input
-                type="checkbox"
-                id="terms"
-                checked={acceptTerms}
-                onChange={(e) => setAcceptTerms(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-lg peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:border-transparent transition-all duration-300 cursor-pointer"></div>
-              <i className="fas fa-check absolute left-1.5 top-1 text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></i>
-            </div>
-            <label htmlFor="terms" className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={acceptTerms}
+              onChange={(e) => setAcceptTerms(e.target.checked)}
+              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-purple-600 focus:ring-purple-500 cursor-pointer"
+            />
+            <label htmlFor="terms" className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer select-none">
               J'accepte les{' '}
-              <Link to="/terms" className="text-purple-600 hover:text-purple-500 font-medium transition-colors">
+              <Link to="/terms" className="text-purple-600 hover:text-purple-500 font-medium transition-colors" onClick={(e) => e.stopPropagation()}>
                 conditions d'utilisation
               </Link>{' '}
               et la{' '}
-              <Link to="/privacy" className="text-purple-600 hover:text-purple-500 font-medium transition-colors">
+              <Link to="/privacy" className="text-purple-600 hover:text-purple-500 font-medium transition-colors" onClick={(e) => e.stopPropagation()}>
                 politique de confidentialité
               </Link>
             </label>
